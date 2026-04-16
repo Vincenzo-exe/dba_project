@@ -1,181 +1,198 @@
-# ResumeForge — Setup Guide
-## Template 2: Finance / Business · MySQL Workbench
+# Resume Builder
 
----
+An ATS-friendly resume builder web application that helps users create professional, clean resumes optimized for Applicant Tracking Systems (ATS).
 
-## 📦 Project Files
+## Features
+
+- **ATS-Optimized Design** - Clean, simple formatting that passes ATS parsers
+- **6-Section Resume Form**:
+  1. Personal Information (Name, Job Title, Contact Details)
+  2. Professional Summary
+  3. Skills
+  4. Education
+  5. Work Experience
+  6. Certifications
+- **Dynamic Form Sections** - Add multiple education entries, work experiences, skills, and certifications
+- **Progress Tracking** - Visual progress bar as you fill out the form
+- **PDF Export** - Print or save your resume as PDF
+- **Database Storage** - All resumes securely stored in MySQL
+
+## Tech Stack
+
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Backend**: PHP
+- **Database**: MySQL
+
+## Project Structure
 
 ```
 resume-builder/
-├── index.html        ← The form (fill in your resume info)
-├── style.css         ← Dark UI + white ATS document styles
-├── script.js         ← Dynamic fields + validation
-├── config.php        ← MySQL Workbench connection settings
-├── submit.php        ← Saves form data to MySQL
-├── generate_cv.php   ← Fetches from DB → renders Template 2 CV
-├── database.sql      ← Schema + sample data (run in Workbench)
-└── README.md         ← This file
+├── index.html           # Main form
+├── generate_cv.php      # Resume display/output
+├── submit.php           # Form validation & database insertion
+├── config.php           # Database configuration
+├── style.css            # All styling
+├── script.js            # Form functionality
+└── README.md            # This file
 ```
 
----
+## Installation
 
-## ✅ Step 1 — Install XAMPP
+1. **Clone/Extract** the project to `C:\xampp\htdocs\resume-builder\`
 
-1. Download from: **https://www.apachefriends.org/download.html**
-2. Run the installer (default options are fine)
-3. Install to `C:\xampp\`
+2. **Create MySQL Database**:
+   ```sql
+   CREATE DATABASE resume_builder;
+   USE resume_builder;
 
----
+   CREATE TABLE resumes (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     prenom VARCHAR(100),
+     nom VARCHAR(100),
+     subtext VARCHAR(150),
+     phone VARCHAR(20),
+     email VARCHAR(100),
+     city VARCHAR(100),
+     summary TEXT,
+     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+   );
 
-## ▶️ Step 2 — Start Apache & MySQL in XAMPP
+   CREATE TABLE skills (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     resume_id INT,
+     skill_name VARCHAR(200),
+     FOREIGN KEY (resume_id) REFERENCES resumes(id) ON DELETE CASCADE
+   );
 
-1. Open **XAMPP Control Panel**
-2. Click **Start** next to **Apache** → turns green
-3. Click **Start** next to **MySQL** → turns green
+   CREATE TABLE education (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     resume_id INT,
+     school VARCHAR(200),
+     start_date VARCHAR(10),
+     end_date VARCHAR(10),
+     description VARCHAR(500),
+     FOREIGN KEY (resume_id) REFERENCES resumes(id) ON DELETE CASCADE
+   );
 
-> MySQL must be running for Workbench and PHP to connect.
+   CREATE TABLE experience (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     resume_id INT,
+     company VARCHAR(150),
+     role_title VARCHAR(150),
+     location VARCHAR(100),
+     start_date VARCHAR(10),
+     end_date VARCHAR(10),
+     description TEXT,
+     FOREIGN KEY (resume_id) REFERENCES resumes(id) ON DELETE CASCADE
+   );
 
----
+   CREATE TABLE certifications (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     resume_id INT,
+     cert_name VARCHAR(300),
+     FOREIGN KEY (resume_id) REFERENCES resumes(id) ON DELETE CASCADE
+   );
+   ```
 
-## 📁 Step 3 — Place Project Files
+3. **Configure Database** in `config.php`:
+   ```php
+   <?php
+   define('DB_HOST', 'localhost');
+   define('DB_USER', 'root');
+   define('DB_PASS', '');
+   define('DB_NAME', 'resume_builder');
 
-Copy all files into:
-```
-C:\xampp\htdocs\resume-builder\
-```
+   function getDB() {
+     $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+     if (!$conn) die('Database connection failed');
+     return $conn;
+   }
 
-Your folder should look like:
-```
-C:\xampp\htdocs\resume-builder\
-  ├── index.html
-  ├── style.css
-  ├── script.js
-  ├── config.php
-  ├── submit.php
-  ├── generate_cv.php
-  └── database.sql
-```
+   function esc($conn, $str) {
+     return mysqli_real_escape_string($conn, $str);
+   }
+   ?>
+   ```
 
----
+4. **Start XAMPP** and navigate to `http://localhost/resume-builder/`
 
-## 🗄 Step 4 — Create the Database in MySQL Workbench
+## Usage
 
-Your Workbench connection (from your screenshot):
-| Setting         | Value       |
-|-----------------|-------------|
-| Connection Name | local host  |
-| Hostname        | 127.0.0.1   |
-| Port            | 3306        |
-| Username        | root        |
-| Password        | *(empty)*   |
+1. **Fill Out Form** - Complete all 6 sections
+2. **Add Multiple Entries** - Use "+" buttons to add education, experience, skills, and certifications
+3. **Submit** - Click "Generate My Resume"
+4. **View & Export** - Review your resume and print/save as PDF
 
-### Steps:
-1. Open **MySQL Workbench**
-2. Double-click **"local host"** connection
-3. Enter your password if prompted (leave blank if none)
-4. Go to **File → Open SQL Script...**
-5. Browse to `C:\xampp\htdocs\resume-builder\database.sql`
-6. Click **Open**
-7. Press **Ctrl + Shift + Enter** (or click the ⚡ lightning bolt)
-8. All 7 queries will run — you'll see green checkmarks in the Output panel
+## File Descriptions
 
-You should now see **resumeforge** in the Schemas panel on the left with these tables:
-- `resumes`
-- `skills`
-- `education`
-- `experience`
-- `certifications`
+### `index.html`
+Main form with 6 sections matching resume structure. Includes:
+- Form validation
+- Progress bar
+- Dynamic field addition
 
----
+### `generate_cv.php`
+Displays the generated resume in ATS-friendly format:
+- Clean Arial font
+- Standard spacing
+- No graphics or decorative elements
+- Print-optimized styling
 
-## 🌐 Step 5 — Open the App in Your Browser
+### `submit.php`
+Handles form submission:
+- Validates all required fields
+- Sanitizes input data
+- Inserts data into MySQL
+- Redirects to resume view
 
-```
-http://localhost/resume-builder/index.html
-```
+### `config.php`
+Database configuration and helper functions
 
-1. Fill in the form
-2. Click **Generate My Resume**
-3. You'll be redirected to your generated **Template 2** resume
-4. Click **Print / Save as PDF** to download it
+### `style.css`
+All styling for form and generated resume
 
----
+### `script.js`
+JavaScript functionality for:
+- Form validation
+- Progress tracking
+- Dynamic field management
 
-## 📄 Template 2 Layout (Finance / Business)
+## ATS Compatibility
 
-Your generated CV will exactly match this structure:
+This resume builder produces ATS-friendly resumes with:
+- ✅ Simple, clean formatting
+- ✅ Standard fonts (Arial)
+- ✅ No images or graphics
+- ✅ Proper heading hierarchy
+- ✅ Clear section organization
+- ✅ No tables or complex layouts
+- ✅ Readable by all ATS systems
 
-```
-Name
-Phone • Email
+## Browser Support
 
-EDUCATION
-School Name                               City, Morocco
-Degree (italic)                           Start – End (italic)
-Relevant Courses: ...
+- Chrome/Chromium
+- Firefox
+- Safari
+- Edge
 
-FINANCIAL EXPERIENCE
-Company Name                              Location
-Role / Job Title (italic)                 Start – End (italic)
-• Achievement bullet point
-• Achievement bullet point
+## Features for Employers
 
-LEADERSHIP
-• Certification / leadership entry
+- Resume data stored securely in MySQL
+- Easily retrieve and review submissions
+- Export candidate information
 
-SKILLS AND INTERESTS
-Language: ...
-Computer: ...
-Interests: ...
-```
+## Future Enhancements
 
----
+- [ ] Multiple resume templates
+- [ ] Custom color themes
+- [ ] Email delivery
+- [ ] Resume analytics
+- [ ] Candidate tracking system
 
-## 💡 Tips for Template 2
+## License
 
-- **Education → Degree field**: Write your full degree first, then add "Relevant Courses:" on the same line or next. Example:
-  ```
-  Bachelor of Arts in Finance; Minor in Economics. Relevant Courses: Corporate Finance, Portfolio Theory, Business Law.
-  ```
+© 2025 Resume Builder - All Rights Reserved
 
-- **Experience → Key Achievements**: Write one achievement per line — each line becomes a bullet point on the CV. Example:
-  ```
-  Researched and analysed portfolio holdings worth MAD 4.2B
-  Built an Excel model that reduced reporting time by 35%
-  Presented ESG investment findings to the strategy committee
-  ```
+## Support
 
-- **Skills**: The three skill fields map exactly to Template 2's Language / Computer / Interests rows.
-
----
-
-## 🖨 Saving as PDF
-
-1. On the generated CV page, click **Print / Save as PDF**
-2. In the browser print dialog:
-   - Set **Destination** → **Save as PDF**
-   - Set **Paper size** → **A4**
-   - Disable **Headers and footers** (optional, for a cleaner look)
-3. Click **Save**
-
----
-
-## 🔧 Troubleshooting
-
-| Problem | Fix |
-|---|---|
-| White page / PHP shown as text | Open via `http://localhost/...` not `file://...` |
-| "Database connection failed" | Make sure MySQL is started in XAMPP Control Panel |
-| Schema not found in Workbench | Re-run `database.sql` in Workbench |
-| Port conflict on 3306 | Another MySQL instance may be running — stop it first |
-| Experience bullets not showing | Each bullet must be on its own line in the textarea |
-
----
-
-## 🔒 Security Note
-
-This is a local development setup. For production deployment, replace `mysqli_real_escape_string` with **PDO prepared statements**.
-
----
-
-*ResumeForge · Template 2: Finance / Business · Tufts ATS Format*
+For issues or questions, contact: abdelaziz.ahmamou@emsi-edu.ma
