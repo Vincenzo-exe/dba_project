@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS resumes (
 CREATE TABLE IF NOT EXISTS skills (
     id         INT UNSIGNED  NOT NULL AUTO_INCREMENT,
     resume_id  INT UNSIGNED  NOT NULL,
-    skill_name VARCHAR(500)  NOT NULL,
+    skill_name TEXT          NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (resume_id) REFERENCES resumes(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

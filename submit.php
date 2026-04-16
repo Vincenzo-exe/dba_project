@@ -66,8 +66,8 @@ $resume_id = mysqli_insert_id($conn);
 $skills = $_POST['skills'] ?? [];
 foreach ($skills as $skill) {
     if (trim($skill) === '') continue;
-    if (strlen($skill) > 500) {
-        $errors[] = "Skill exceeds 500 character limit.";
+    if (strlen($skill) > 65535) {
+        $errors[] = "Skill exceeds 65,535 character limit.";
         continue;
     }
     $s = esc($conn, $skill);
