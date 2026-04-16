@@ -1,9 +1,4 @@
 <?php
-/* ═══════════════════════════════════════════════════════════════
-   config.php — Database Connection
-   MySQL Workbench · Standard TCP/IP
-   Host: 127.0.0.1 | Port: 3306 | User: root | Pass: (empty)
-═══════════════════════════════════════════════════════════════ */
 
 define('DB_HOST',    '127.0.0.1');   // Workbench hostname
 define('DB_PORT',    3306);           // Workbench port
@@ -12,12 +7,7 @@ define('DB_PASS',    'azizaziz');      // Update password if needed
 define('DB_NAME',    'resumeforge');     // Update database name if needed
 define('DB_CHARSET', 'utf8mb4');
 
-/**
- * Returns an open MySQLi connection.
- * Exits with an error message on failure.
- */
 function getDB(): mysqli {
-    // mysqli_connect with explicit port for Workbench TCP/IP
     $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 
     if (!$conn) {

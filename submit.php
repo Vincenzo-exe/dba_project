@@ -1,8 +1,4 @@
 <?php
-/* ═══════════════════════════════════════════════════════════════
-   submit.php — Validate form & store in MySQL (via Workbench)
-   Template 2: captures company, role_title, location, dates, bullets
-═══════════════════════════════════════════════════════════════ */
 
 require_once 'config.php';
 

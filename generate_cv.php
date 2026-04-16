@@ -1,8 +1,4 @@
 <?php
-/* ═══════════════════════════════════════════════════════════════
-   generate_cv.php — ATS Resume Generator
-   Displays ONLY the sections from index.html in correct order
-═══════════════════════════════════════════════════════════════ */
 
 require_once 'config.php';
 
