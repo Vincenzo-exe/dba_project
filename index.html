@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resume Builder — ATS Resume Builder</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Background grid -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-icon">◈</span>
+      <span class="logo-text">Resume Builder</span>
+    </div>
+    <p class="header-tagline">ATS-friendly CV in seconds</p>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <div class="page-title">
+      <h1>Build Your <span class="accent">Resume</span></h1>
+      <p>Fill in your details and let us do the hard work.</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+      <span class="progress-label" id="progressLabel">0% Complete</span>
+    </div>
+
+    <form id="resumeForm" action="submit.php" method="POST" novalidate>
+
+      <!-- ═══════════════════════════════ SECTION 1: PERSONAL INFO ═══ -->
+      <section class="form-section" data-section="1">
+        <div class="section-header">
+          <span class="section-badge">01</span>
+          <div>
+            <h2>Personal Information</h2>
+            <p>Your contact and identification details</p>
+          </div>
+        </div>
+
+        <div class="form-grid two-col">
+          <div class="field-group">
+            <label for="prenom">First Name <span class="req">*</span></label>
+            <input type="text" id="prenom" name="prenom" placeholder="e.g. Vincenzo" required />
+            <span class="field-error" id="err-prenom"></span>
+          </div>
+          <div class="field-group">
+            <label for="nom">Last Name <span class="req">*</span></label>
+            <input type="text" id="nom" name="nom" placeholder="e.g.  Ahmamou" required />
+            <span class="field-error" id="err-nom"></span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="subtext">Job Title / Subtext <span class="req">*</span></label>
+          <input type="text" id="subtext" name="subtext" placeholder="e.g. Full-Stack Developer | Software Engineer" required />
+          <span class="field-error" id="err-subtext"></span>
+        </div>
+
+        <div class="form-grid two-col">
+          <div class="field-group">
+            <label for="phone">Phone Number <span class="req">*</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="+212 6XX XXX XXX" required />
+            <span class="field-error" id="err-phone"></span>
+          </div>
+          <div class="field-group">
+            <label for="email">Email Address <span class="req">*</span></label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required />
+            <span class="field-error" id="err-email"></span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="city">City <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="city" name="city" required>
+              <option value="">Select your city...</option>
+              <option value="Casablanca">Casablanca</option>
+              <option value="Rabat">Rabat</option>
+              <option value="Fès">Fès</option>
+              <option value="Marrakech">Marrakech</option>
+              <option value="Agadir">Agadir</option>
+              <option value="Tanger">Tanger</option>
+              <option value="Meknès">Meknès</option>
+              <option value="Oujda">Oujda</option>
+              <option value="Kénitra">Kénitra</option>
+              <option value="Tétouan">Tétouan</option>
+              <option value="Safi">Safi</option>
+              <option value="El Jadida">El Jadida</option>
+              <option value="Nador">Nador</option>
+              <option value="Béni Mellal">Béni Mellal</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="select-arrow">▾</span>
+          </div>
+          <span class="field-error" id="err-city"></span>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════ SECTION 2: SUMMARY ═════════ -->
+      <section class="form-section" data-section="2">
+        <div class="section-header">
+          <span class="section-badge">02</span>
+          <div>
+            <h2>Professional Summary</h2>
+            <p>A brief overview of your professional profile (2-4 sentences)</p>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="summary">Summary <span class="req">*</span></label>
+          <textarea id="summary" name="summary" rows="5"
+            placeholder="Results-driven software engineer with 3+ years of experience building scalable web applications. Adept at React, Node.js, and cloud architecture. Passionate about clean code and delivering exceptional user experiences." required></textarea>
+          <div class="char-counter"><span id="summaryCount">0</span> / 600 characters</div>
+          <span class="field-error" id="err-summary"></span>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════ SECTION 3: SKILLS ══════════ -->
+      <section class="form-section" data-section="3">
+        <div class="section-header">
+          <span class="section-badge">03</span>
+          <div>
+            <h2>Skills</h2>
+            <p>Add your technical and soft skills</p>
+          </div>
+        </div>
+
+        <div id="skillsContainer">
+          <div class="skill-row">
+            <input type="text" name="skills[]" placeholder="e.g. JavaScript, React, Node.js" class="skill-input" />
+            <button type="button" class="btn-remove" onclick="removeRow(this)" title="Remove">✕</button>
+          </div>
+        </div>
+        <button type="button" class="btn-add-row" onclick="addSkill()">
+          <span>+</span> Add Skill
+        </button>
+      </section>
+
+      <!-- ═══════════════════════════════ SECTION 4: EDUCATION ═══════ -->
+      <section class="form-section" data-section="4">
+        <div class="section-header">
+          <span class="section-badge">04</span>
+          <div>
+            <h2>Education</h2>
+            <p>Your academic background</p>
+          </div>
+        </div>
+
+        <div id="educationContainer">
+          <div class="dynamic-entry" data-type="education">
+            <div class="entry-header">
+              <span class="entry-label">Education Entry</span>
+              <button type="button" class="btn-remove-entry" onclick="removeEntry(this)">✕ Remove</button>
+            </div>
+            <div class="field-group">
+              <label>School / University <span class="req">*</span></label>
+              <input type="text" name="edu_school[]" placeholder="e.g. Université Mohammed V, Rabat" required />
+            </div>
+            <div class="form-grid two-col">
+              <div class="field-group">
+                <label>Start Date <span class="req">*</span></label>
+                <input type="month" name="edu_start[]" required />
+              </div>
+              <div class="field-group">
+                <label>End Date <span class="req">*</span></label>
+                <input type="month" name="edu_end[]" required />
+              </div>
+            </div>
+            <div class="field-group">
+              <label>Description / Degree</label>
+              <textarea name="edu_desc[]" rows="3" placeholder="e.g. Bachelor's in Computer Science — Specialization in AI and Data Science."></textarea>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-add-row" onclick="addEducation()">
+          <span>+</span> Add Another Education
+        </button>
+      </section>
+
+      <!-- ═══════════════════════════════ SECTION 5: EXPERIENCE ══════ -->
+      <section class="form-section" data-section="5">
+        <div class="section-header">
+          <span class="section-badge">05</span>
+          <div>
+            <h2>Work Experience</h2>
+            <p>Optional — Add your professional experience</p>
+            <span class="optional-tag">Optional</span>
+          </div>
+        </div>
+
+        <div id="experienceContainer">
+          <!-- Dynamic entries added here -->
+        </div>
+        <button type="button" class="btn-add-row" onclick="addExperience()">
+          <span>+</span> Add Experience
+        </button>
+      </section>
+
+      <!-- ═══════════════════════════════ SECTION 6: CERTIFICATIONS ══ -->
+      <section class="form-section" data-section="6">
+        <div class="section-header">
+          <span class="section-badge">06</span>
+          <div>
+            <h2>Certifications</h2>
+            <p>Courses, certificates, and credentials</p>
+          </div>
+        </div>
+
+        <div id="certContainer">
+          <div class="skill-row">
+            <input type="text" name="certifications[]" placeholder="e.g. AWS Certified Solutions Architect — Amazon (2023)" class="skill-input" />
+            <button type="button" class="btn-remove" onclick="removeRow(this)" title="Remove">✕</button>
+          </div>
+        </div>
+        <button type="button" class="btn-add-row" onclick="addCert()">
+          <span>+</span> Add Certification
+        </button>
+      </section>
+
+      <!-- ═══════════════════════════════ SUBMIT ══════════════════════ -->
+      <div class="submit-zone">
+        <button type="submit" class="btn-primary" id="submitBtn">
+          <span class="btn-text">Generate My Resume</span>
+          <span class="btn-icon">→</span>
+        </button>
+        <p class="submit-note">Your data is stored securely and used only to generate your CV.</p>
+      </div>
+
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 Resume Builder · Built for ATS Excellence</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
