@@ -1,4 +1,3 @@
-
 /* ── RESET & VARIABLES ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -356,11 +355,6 @@ textarea { resize: vertical; min-height: 100px; }
 .cv-btn.secondary { background: var(--bg2); color: var(--text-2); border: 1px solid var(--border); }
 .cv-btn.secondary:hover { border-color: var(--border-h); color: var(--text); }
 
-/* ═══════════════════════════════════════════════════════════════
-   TEMPLATE 2 — FINANCE / BUSINESS
-   White ATS document — pixel-perfect match to the Tufts PDF
-   Font: Times New Roman (ATS-safe, readable by all parsers)
-═══════════════════════════════════════════════════════════════ */
 .cv2-doc {
   background: #ffffff;
   color: #000000;
@@ -472,8 +466,18 @@ textarea { resize: vertical; min-height: 100px; }
 
 /* ── Print ── */
 @media print {
+  @page {
+    size: A4;
+    margin: 2cm; 
+  }
   body { background: #fff !important; }
   .bg-grid, .bg-glow, .cv-actions, .site-header, .site-footer { display: none !important; }
   .cv-wrapper { margin: 0; padding: 0; }
-  .cv2-doc { box-shadow: none; border-radius: 0; padding: 0; max-width: 100%; }
+  .cv2-doc {
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    max-width: 100%;
+    border: none;
+  }
 }
